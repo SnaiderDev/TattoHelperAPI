@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start": "node views/index.js",
     "dev": "node --watch views/index.js"
   },
   "keywords": [],

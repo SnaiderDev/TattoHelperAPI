@@ -1,7 +1,7 @@
 import express from "express";
-import mongoose from "mongoose";
-import dotenv from 'dotenv'
+//exportacion de la funcion de la base de datos
 import connectDB from "../config/db.js";
+//exportacion del primer modelo
 import project from "../models/project.js";
 
 const app = express();
@@ -13,16 +13,20 @@ app.get("/", async (req, res) => {
     res.json(data); // Responder con el JSON correctamente
   } catch (error) {
     console.error("This is not possible ", error);
-    res
-      .status(500)
-      .json({ error: "This is not possible " });
+    res.status(500).json({ error: "This is not possible " });
   }
 });
 
+
+//comprobacion de la disponibilidad del puerto
 const port = process.env.port ?? 3000;
 
 //Se ejecuta una funcion asincronica con el fin de comprobar la conexion a de la base de datos previamente
 const runServer = async () => {
+  /*
+   Solo es necesario realizar una sola vez la consulta a la base de datos siempre
+   y cuando esta sea exitosa
+  */
   await connectDB();
   app.listen(port, () => {
     console.log(`Server is listening in http://localhost:${port}`);
