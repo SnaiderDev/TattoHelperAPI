@@ -12,10 +12,9 @@ export async function getAllNeedleTypes (req,res){
 }
 
 //consulta de las referencias de una aguja
-
-export async function getAllNedleNumbers (type){
+export async function getNeedleDetails (shortName){
     try {
-        const needleNumbers = await needle.find({shortcut:type})
+        const needleNumbers = await needle.find({shortName:shortName})
         console.log(needleNumbers)
         res.json(needleNumbers)
     } catch (error) {
