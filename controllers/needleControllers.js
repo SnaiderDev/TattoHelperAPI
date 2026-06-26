@@ -1,3 +1,4 @@
+import { json } from "express"
 import needle from "../models/needle.js"
 
 //consulta de todos los tipos de las agujas
@@ -15,8 +16,7 @@ export async function getAllNeedleTypes (req,res){
 export async function getNeedleDetails (shortName){
     try {
         const needleNumbers = await needle.find({shortName:shortName})
-        console.log(needleNumbers)
-        res.json(needleNumbers)
+        return (needleNumbers)
     } catch (error) {
         console.log('This is not possible'+ error)
     }

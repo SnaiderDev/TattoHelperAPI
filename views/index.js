@@ -3,18 +3,13 @@
 import connectDB from "../config/db.js";
 //exportacion routers
 import express from 'express';
-import needleRoutes from './routes/needleRoutes';
+import needleRoutes from '../routes/needleRoute.js';
 
 const app = express();
 const PORT = 3000;
 
 // Registrar el router para la ruta /needle/:shortname
 app.use('/needle', needleRoutes);
-
-// Iniciar el servidor
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
 
 
 //comprobacion de la disponibilidad del puerto

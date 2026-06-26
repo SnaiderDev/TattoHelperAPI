@@ -1,11 +1,13 @@
 import express from 'express';
-const router = express.Router();
-import { getNeedleDetails } from '../controllers/needleController.js';
+import {getNeedleDetails}   from '../controllers/needleControllers.js';
+
+const router = express.Router()
+
 
 // Ruta para obtener detalles de un shortname específico.
-router.get('/:shortname', async (req, res) => {
+router.get('/details', async (req, res) => {
     try {
-        const { shortname } = req.params; // Usamos `req.params` porque es `:shortname`
+        const { shortname } = req.query; 
         const data = await getNeedleDetails(shortname);
         res.json(data);
     } catch (error) {
