@@ -60,26 +60,13 @@ npm install
 ```bash
 npm start
 ```
-*(Opcional: Usa `npm run dev` para modo desarrollo).*
 
----
 
 ## 🔗 Endpoints API (Ejemplos)
 | Método | Ruta               | Descripción                          |
 |--------|--------------------|--------------------------------------|
-| GET    | `/api/tattoos`     | Listar diseños de tatuajes.           |
-| POST   | `/api/tattoos`     | Crear nuevo diseño.                  |
+| GET    | `/needles`     | Listar todos los tipos de agujas.           |
+| GET   | `/needles/details/{shortname}`     | Obtener todos los detalles del tipo de aguja.                  |
 
-*(Documentación completa en [Swagger UI](http://localhost:3000/docs)).*
 
----
 
-## 📝 Base de Datos
-- **MongoDB** (o PostgreSQL): Almacena datos como:
-  ```json
-  {
-    "name": "Dragon Tattoo",
-    "description": "Tatuaje de dragón tradicional.",
-    "price": 120.50,
-    "clientHistory": [...]
-  }

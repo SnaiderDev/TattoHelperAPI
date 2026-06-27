@@ -1,25 +1,19 @@
-import express from "express";
+import express from 'express';
+import pc from 'picocolors'
 //exportacion de la funcion de la base de datos
 import connectDB from "../config/db.js";
-//exportacion del primer modelo
-import project from "../models/project.js";
+//exportacion routers
+import needleRoutes from '../routes/needleRoute.js';
 
 const app = express();
+const PORT = 3000;
 
-//Retorno de informacion de proyectos
-app.get("/", async (req, res) => {
-  try {
-    const data = await project.find({}); // Buscar todos los proyectos
-    res.json(data); // Responder con el JSON correctamente
-  } catch (error) {
-    console.error("This is not possible ", error);
-    res.status(500).json({ error: "This is not possible " });
-  }
-});
+// Registrar el router para la ruta /needle/:shortname
+app.use('/needles', needleRoutes);
 
 
 //comprobacion de la disponibilidad del puerto
-const port = process.env.port ?? 3000;
+const port = process.env.port || 3000;
 
 //Se ejecuta una funcion asincronica con el fin de comprobar la conexion a de la base de datos previamente
 const runServer = async () => {
@@ -29,7 +23,7 @@ const runServer = async () => {
   */
   await connectDB();
   app.listen(port, () => {
-    console.log(`Server is listening in http://localhost:${port}`);
+    console.log(pc.green(`Server is listening in ${pc.blue(`http://localhost:${port}`)} ⬅️`));
   });
 };
 
