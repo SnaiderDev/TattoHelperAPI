@@ -25,12 +25,12 @@ router.post('/login', async(req,res) =>{
     try {
         const token = await loginUser(email,password)
         if(!token){
-            res.status(404).json({message: 'Invalid credentials'})
-        } else {
-            res.status(200).json({token})
+            return res.status(404).json({message: 'Invalid credentials'})
         }
+        return res.status(200).json({token})
     } catch (error) {
         console.error(pc.yellow(`Error logging in user: ${pc.red(error)}`))
+        return res.status(500).json({message: 'Error logging in user'})
     }
 })
 

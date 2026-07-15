@@ -7,25 +7,22 @@ import user from '../models/user.js'
 
 //creacion de un usuario 
 export async function createUser(name, email, password){
-    try {
         const newUser = new user({name, email, password})
-        await newUser.save()
-    } catch (error) {
-        console.error(pc.yellow(`Error creating user: ${error}`))
-    }
+        return await newUser.save()
 }
 
 //login
 export async function loginUser(email, password){
-    try {
-        const userMatch =  await user.findOne({email})
+        const userMatch = await user.findOne({email})
+        if(!userMatch) return null
+
         const isMatch = await bcrypt.compare(password, userMatch.password)
-        if(!isMatch){
-            throw new Error('Invalid credentials')
+        if(!isMatch) return null
+
+        if (!process.env.JWT_SECRET) {
+            throw new Error('JWT_SECRET must have a value')
         }
+
         const token = jwt.sign({id:userMatch._id}, process.env.JWT_SECRET, {expiresIn: '1h'})
         return token;
-    } catch (error) {
-       console.error(pc.yellow(`Credential are not valid: ${pc.red(error)}`))
-    }
 }
