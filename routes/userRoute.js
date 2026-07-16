@@ -27,6 +27,7 @@ router.post('/login', async(req,res) =>{
         if(!token){
             return res.status(404).json({message: 'Invalid credentials'})
         }
+        console.log(pc.green(`This is fine!! user logged successfully ⚡ `))
         return res.status(200).json({token})
     } catch (error) {
         console.error(pc.yellow(`Error logging in user: ${pc.red(error)}`))
