@@ -29,8 +29,9 @@ router.post('/login', async(req,res) =>{
         }
         console.log(pc.green(`This is fine!! user logged successfully ⚡ `))
         return res.status(200).json({token})
-    } catch (error) {
-        console.error(pc.yellow(`Error logging in user: ${pc.red(error)}`))
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : String(error)
+        console.error(pc.yellow(`Error logging in user: ${pc.red(message)}`))
         return res.status(500).json({message: 'Error logging in user'})
     }
 })
