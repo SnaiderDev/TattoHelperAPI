@@ -8,15 +8,15 @@ const router = express.Router();
 
 //creacion de usuario 
 router.post('/create', async(req,res)=>{
-    try {
         console.log(pc.green(`Creating user with data: ${pc.blue(JSON.stringify(req.body))}`))
         const {name, email, password} = req.body
-        await createUser(name, email, password)
-        res.status(201).json({message: 'User created successfully'})
-    } catch (error) {
-        console.error(pc.yellow(`Errror creating user: ${pc.red(error)}`))
-        res.status(400).json({message: 'Error creating user'})
-    }
+        const user = await createUser(name, email, password)
+        if(user){
+            res.status(201).json({message: 'User created successfully'})
+        } else {
+            res.status(400).json({message: 'Error creating user'})
+        }
+
 })
 
 //logeo de usuario
