@@ -1,4 +1,5 @@
 import express from "express";
+import pc from "picocolors";
 import {
   getAllNeedleTypes,
   getNeedleDetails,
@@ -6,6 +7,7 @@ import {
 
 const router = express.Router();
 
+ 
 //obtener todos los tipos de agujas
 router.get("/", async (req, res) => {
   try {
@@ -21,12 +23,19 @@ router.get("/", async (req, res) => {
 // Ruta para obtener detalles de un shortname específico.
 router.get("/details", async (req, res) => {
   try {
-    const { shortname } = req.query;
+    const shortnameValue = req.query.shortname;
+    const shortname = typeof shortnameValue === "string" ? shortnameValue : undefined;
+
+    if (!shortname) {
+      return res.status(400).json({ message: "shortname query is required" });
+    }
+
     const data = await getNeedleDetails(shortname);
-    res.json(data);
-  } catch (error) {
+    return res.json(data);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
     res.status(404);
-    console.error(pc.yellow(`This is not possible!!! ${error}`));
+    console.error(pc.yellow(`This is not possible!!! ${message}`));
   }
 });
 
