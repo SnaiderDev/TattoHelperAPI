@@ -4,11 +4,6 @@ import pc from "picocolors";
 import user from "../models/user.js";
 import z from "zod";
 
-type CreateUserResult = {
-  name: string
-  email: string
-  password: string
-}
 
 //creacion de un usuario
 export async function createUser(name: string, email: string, password: string) {
@@ -26,7 +21,7 @@ export async function createUser(name: string, email: string, password: string) 
     return null;
   }
 
-  const data: CreateUserResult = {
+  const data = {
     name: validationResult.data.name,
     email: validationResult.data.email,
     password: validationResult.data.password,
