@@ -1,9 +1,18 @@
 
 import express from "express"
 import pc from "picocolors"
-import { createDating } from "../controllers/datingControllers.js"
+import { createDating, getDatings } from "../controllers/datingControllers.js"
 
 const router =express.Router()
+
+router.get('/', async(req,res)=>{
+  try {
+    const data = await getDatings()
+    console.log(data)
+  } catch (error) {
+    console.error(error)
+  }
+})
 
 router.post('/create',async(req,res)=>{
     const {

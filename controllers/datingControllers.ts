@@ -2,6 +2,8 @@ import z from "zod";
 import pc from "picocolors";
 import dating from "../models/dating.js";
 
+
+//creacion de citas
 export async function createDating(
   name: string,
   email: string,
@@ -53,4 +55,16 @@ export async function createDating(
   })
 
   return await newDating.save()
+}
+
+
+//consulta de citas en db
+export async function getDatings(){
+ const datings = await dating.find();
+ if(!datings){
+    console.log(pc.yellow(`This is not possible!!`));
+    return null;
+ }
+ return datings;
+ 
 }
