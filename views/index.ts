@@ -4,7 +4,8 @@ import pc from 'picocolors'
 import connectDB from "../config/db.js";
 //exportacion routers
 import needleRoutes from '../routes/needleRoute.js';
-import userRoutes from '../routes/userRoute.js'
+import userRoutes from '../routes/userRoute.js';
+import datingRoutes from '../routes/datingRoute.js'
 
 const app = express();
 const PORT = 3000;
@@ -15,6 +16,7 @@ app.use(express.json());
 // Registrar el router para la ruta /needle/:shortname
 app.use('/needles', needleRoutes);
 app.use('/users', userRoutes);
+app.use('/dating',datingRoutes)
 //comprobacion de la disponibilidad del puerto
 const port = process.env.port || 3000;
 
