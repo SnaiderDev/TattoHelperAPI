@@ -5,7 +5,7 @@ import { createDating } from "../controllers/datingControllers.js"
 
 const router =express.Router()
 
-router.post('create',async(req,res)=>{
+router.post('/create',async(req,res)=>{
     const {
     name,
     email,

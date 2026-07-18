@@ -1,4 +1,4 @@
-import z, { uint32 } from "zod";
+import z from "zod";
 import pc from "picocolors";
 import dating from "../models/dating.js";
 
@@ -7,8 +7,8 @@ export async function createDating(
   email: string,
   sesion: number,
   timeAvg: number,
-  unit: number,
-  state: CharacterData,
+  unit: string,
+  state: string,
   photo: string,
   value: number,
 ) {
@@ -17,7 +17,7 @@ export async function createDating(
     email: z.string(),
     sesion: z.number(),
     timeAvg: z.number(),
-    unit: z.number(),
+    unit: z.string().max(1),
     state: z.string().max(1),
     photo: z.string().default(""),
     value: z.number(),
