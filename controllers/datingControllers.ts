@@ -3,37 +3,41 @@ import pc from "picocolors";
 import dating from "../models/dating.js";
 
 
+
 //creacion de citas
 export async function createDating(
   name: string,
   email: string,
-  sesion: number,
+  sesions: number,
   timeAvg: number,
   unit: string,
   state: string,
   photo: string,
   value: number,
+  userId: string
 ) {
   const dataValidation = z.object({
     name: z.string(),
     email: z.string(),
-    sesion: z.number(),
+    sesions: z.number(),
     timeAvg: z.number(),
     unit: z.string().max(1),
     state: z.string().max(1),
     photo: z.string().default(""),
     value: z.number(),
+    userId: z.string()
   });
 
   const validationResult = dataValidation.safeParse({
     name,
     email,
-    sesion,
+    sesions,
     timeAvg,
     unit,
     state,
     photo,
     value,
+    userId
   });
 
     if (!validationResult.success) {
@@ -46,12 +50,13 @@ export async function createDating(
   const newDating = new dating({
     name: validationResult.data.name,
     email: validationResult.data.email,
-    sesion: validationResult.data.sesion,
+    sesions: validationResult.data.sesions,
     timeAvg: validationResult.data.timeAvg,
     unit: validationResult.data.unit,
     state: validationResult.data.state,
     photo: validationResult.data.photo,
-    value: validationResult.data.value
+    value: validationResult.data.value,
+    userId: validationResult.data.userId
   })
 
   return await newDating.save()

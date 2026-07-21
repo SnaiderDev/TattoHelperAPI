@@ -10,7 +10,12 @@ const datingSchema= new mongoose.Schema({
     unit: {type:String, required:true},
     state: {type:String, required:true},
     photo: {type:String, required:false},
-    value: {type:Number, required:true}
+    value: {type:Number, required:true},
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+        required: true
+    }
 })
 
 export default mongoose.model('dating', datingSchema)

@@ -6,13 +6,13 @@ import connectDB from "../config/db.js";
 import needleRoutes from '../routes/needleRoute.js';
 import userRoutes from '../routes/userRoute.js';
 import datingRoutes from '../routes/datingRoute.js'
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const PORT = 3000;
 
-// Middleware para parsear JSON
+// Middleware para parsear JSON las respuestas http
 app.use(express.json());
-
 // Registrar el router para la ruta /needle/:shortname
 app.use('/needles', needleRoutes);
 app.use('/users', userRoutes);

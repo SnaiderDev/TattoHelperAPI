@@ -32,7 +32,9 @@ export async function createUser(
   });
   if (!validationResult.success) {
     console.error(
-      pc.yellow(`Error al crear usuario: ${pc.red(validationResult.error.toString())}`),
+      pc.yellow(
+        `Error al crear usuario: ${pc.red(validationResult.error.toString())}`,
+      ),
     );
     return null;
   }
@@ -68,7 +70,9 @@ export async function loginUser(email: string, password: string) {
   const validationResult = userDataValidation.safeParse({ email, password });
   if (!validationResult.success) {
     console.log(
-      pc.yellow(`Error al iniciar sesión del usuario: ${pc.red(validationResult.error.toString())}`),
+      pc.yellow(
+        `Error al iniciar sesión del usuario: ${pc.red(validationResult.error.toString())}`,
+      ),
     );
     return null;
   }
@@ -78,6 +82,7 @@ export async function loginUser(email: string, password: string) {
     password: validationResult.data.password,
   };
 
+  // Find user by email
   const userMatch = await user.findOne({ email: data.email });
   if (!userMatch) return null;
 
@@ -95,6 +100,20 @@ export async function loginUser(email: string, password: string) {
   return token;
 }
 
+export async function tokenVerificaction(token: string) {
+  try {
+    if (!process.env.JWT_SECRET) {
+      console.log(pc.yellow(`JWT_SECRET is not defined!! ⚠️`));
+      return null;
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return decoded;
+  } catch (error) {
+    console.log(pc.yellow('This is not possible!'))
+    return null;
+  }
+}
+
 // Función para actualizar un usuario
 export async function updateUser(userId: string, newData: object) {
   // Validar estructura de entrada
@@ -106,7 +125,9 @@ export async function updateUser(userId: string, newData: object) {
   const validationResult = schema.safeParse(newData);
   if (!validationResult.success) {
     console.error(
-      pc.yellow(`Error de validación al actualizar usuario ${pc.red(validationResult.error.toString())}`),
+      pc.yellow(
+        `Error de validación al actualizar usuario ${pc.red(validationResult.error.toString())}`,
+      ),
     );
     return null;
   }
