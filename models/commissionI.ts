@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 //state p-Pending | f-finished | c-canceled
 //unit h-hours | m- minutes
-const datingSchema= new mongoose.Schema({
+const commissionISchema= new mongoose.Schema({
     name: {type:String, required:true},
     email: {type:String, required:true},
     sesions: {type:Number, requiered:true},
@@ -18,4 +18,4 @@ const datingSchema= new mongoose.Schema({
     }
 })
 
-export default mongoose.model('dating', datingSchema)
+export default mongoose.model('commission', commissionISchema)

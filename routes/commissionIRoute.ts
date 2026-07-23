@@ -1,7 +1,7 @@
 
 import express from "express"
 import pc from "picocolors"
-import { createDating, getDatings } from "../controllers/datingControllers.js"
+import { createCommission, getCommissions } from "../controllers/commissionIControllers.js"
 import jwt from 'jsonwebtoken'
 import { tokenVerificaction } from "../controllers/userControllers.js"
 
@@ -27,7 +27,7 @@ router.use(async (req, res, next) => {
 
 router.get('/', async(req,res)=>{
   try {
-    const data = await getDatings()
+    const data = await getCommissions()
     res.status(201).json({
       message: data
     })
@@ -52,7 +52,7 @@ router.post('/create',async(req,res)=>{
   } = req.body
 
   try {
-    await createDating(name,email,sesions,timeAvg,unit,state,photo,value,userId)
+    await createCommission(name,email,sesions,timeAvg,unit,state,photo,value,userId)
     res.status(201).json({
          message: "Next dating is coming!"
     })

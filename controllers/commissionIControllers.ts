@@ -1,11 +1,11 @@
 import z from "zod";
 import pc from "picocolors";
-import dating from "../models/dating.js";
+import commission from "../models/commissionI.js";
 
 
 
 //creacion de citas
-export async function createDating(
+export async function createCommission(
   name: string,
   email: string,
   sesions: number,
@@ -47,7 +47,7 @@ export async function createDating(
     return null;
   }
 
-  const newDating = new dating({
+  const newDating = new commission({
     name: validationResult.data.name,
     email: validationResult.data.email,
     sesions: validationResult.data.sesions,
@@ -64,8 +64,8 @@ export async function createDating(
 
 
 //consulta de citas en db
-export async function getDatings(){
- const datings = await dating.find();
+export async function getCommissions(){
+ const datings = await commission.find();
  if(!datings){
     console.log(pc.yellow(`This is not possible!!`));
     return null;
