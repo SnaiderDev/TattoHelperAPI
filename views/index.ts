@@ -6,7 +6,6 @@ import connectDB from "../config/db.ts";
 import needleRoutes from '../routes/needleRoute.ts';
 import userRoutes from '../routes/userRoute.ts';
 import commissionRoutes from '../routes/commissionIRoute.ts'
-import cookieParser from 'cookie-parser';
 
 const app = express();
 const PORT = 3000;
@@ -18,7 +17,7 @@ app.use('/needles', needleRoutes);
 app.use('/users', userRoutes);
 app.use('/commissions',commissionRoutes )
 //comprobacion de la disponibilidad del puerto
-const port = process.env.port || 3000;
+const port = process.env.port || PORT;
 
 //Se ejecuta una funcion asincronica con el fin de comprobar la conexion a de la base de datos previamente
 const runServer = async () => {
