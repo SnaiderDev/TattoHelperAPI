@@ -1,11 +1,11 @@
 import express from 'express';
 import pc from 'picocolors'
 //exportacion de la funcion de la base de datos
-import connectDB from "../config/db.js";
+import connectDB from "../config/db.ts";
 //exportacion routers
-import needleRoutes from '../routes/needleRoute.js';
-import userRoutes from '../routes/userRoute.js';
-import commissionRoutes from '../routes/commissionIRoute.js'
+import needleRoutes from '../routes/needleRoute.ts';
+import userRoutes from '../routes/userRoute.ts';
+import commissionRoutes from '../routes/commissionIRoute.ts'
 import cookieParser from 'cookie-parser';
 
 const app = express();

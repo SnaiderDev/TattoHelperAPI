@@ -1,6 +1,6 @@
 import z from "zod";
 import pc from "picocolors";
-import commission from "../models/commissionI.js";
+import commission from "../models/commissionI.ts";
 
 
 

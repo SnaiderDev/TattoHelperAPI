@@ -1,9 +1,9 @@
 
 import express from "express"
 import pc from "picocolors"
-import { createCommission, getCommissions } from "../controllers/commissionIControllers.js"
+import { createCommission, getCommissions } from "../controllers/commissionIControllers.ts"
 import jwt from 'jsonwebtoken'
-import { tokenVerificaction } from "../controllers/userControllers.js"
+import { tokenVerificaction } from "../controllers/userControllers.ts"
 
 
 const router =express.Router()

@@ -5,7 +5,9 @@ const sesionSChema = new mongoose.Schema({
     state: {type: String, required: true},
     commissionId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "datings",
+        ref: "commissions",
         required:true
     }
-})
+});
+
+export default mongoose.model('sesion', sesionSChema);

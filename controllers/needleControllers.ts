@@ -1,5 +1,5 @@
 import pc from 'picocolors'
-import needle from "../models/needle.js"
+import needle from "../models/needle.ts"
 
 interface NeedleDocument {
   name: string
