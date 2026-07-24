@@ -6,6 +6,7 @@ import connectDB from "../config/db.ts";
 import needleRoutes from '../routes/needleRoute.ts';
 import userRoutes from '../routes/userRoute.ts';
 import commissionRoutes from '../routes/commissionIRoute.ts'
+import sesionsRoutes from '../routes/sesionRoute.ts'
 
 const app = express();
 const PORT = 3000;
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/needles', needleRoutes);
 app.use('/users', userRoutes);
 app.use('/commissions',commissionRoutes )
+app.use('/sesions',sesionsRoutes )
 //comprobacion de la disponibilidad del puerto
 const port = process.env.port || PORT;
 

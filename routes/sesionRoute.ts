@@ -12,4 +12,6 @@ router.get('/', async(req,res)=>{
         message: "This is not fine!"
     })
  }
-})
+});
+
+export default router;
