@@ -113,3 +113,4 @@ export async function updateDateSesion(sesionId: string, date: string) {
 
   return updatedSesion;
 }
+
