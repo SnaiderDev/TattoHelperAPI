@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import pc from "picocolors";
-import user from "../models/user.js";
+import user from "../models/user.ts";
 import z from "zod";
 
 // Creación de un usuario

@@ -1,12 +1,12 @@
 import express from 'express';
 import pc from 'picocolors'
 //exportacion de la funcion de la base de datos
-import connectDB from "../config/db.js";
+import connectDB from "../config/db.ts";
 //exportacion routers
-import needleRoutes from '../routes/needleRoute.js';
-import userRoutes from '../routes/userRoute.js';
-import datingRoutes from '../routes/datingRoute.js'
-import cookieParser from 'cookie-parser';
+import needleRoutes from '../routes/needleRoute.ts';
+import userRoutes from '../routes/userRoute.ts';
+import commissionRoutes from '../routes/commissionIRoute.ts'
+import sesionsRoutes from '../routes/sesionRoute.ts'
 
 const app = express();
 const PORT = 3000;
@@ -16,9 +16,10 @@ app.use(express.json());
 // Registrar el router para la ruta /needle/:shortname
 app.use('/needles', needleRoutes);
 app.use('/users', userRoutes);
-app.use('/dating',datingRoutes)
+app.use('/commissions',commissionRoutes )
+app.use('/sesions',sesionsRoutes )
 //comprobacion de la disponibilidad del puerto
-const port = process.env.port || 3000;
+const port = process.env.port || PORT;
 
 //Se ejecuta una funcion asincronica con el fin de comprobar la conexion a de la base de datos previamente
 const runServer = async () => {

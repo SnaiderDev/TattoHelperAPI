@@ -1,9 +1,9 @@
 
 import express from "express"
 import pc from "picocolors"
-import { createDating, getDatingsByUser, nextDating } from "../controllers/datingControllers.js"
+import { createDating, nextDating,getDatingsByUser } from "../controllers/datingControllers.js"
 import jwt from 'jsonwebtoken'
-import { tokenVerificaction } from "../controllers/userControllers.js"
+import { tokenVerificaction } from "../controllers/userControllers.ts"
 
 
 const router =express.Router()
@@ -27,8 +27,10 @@ router.use(async (req, res, next) => {
 
 router.get('/:userId', async (req, res) => {
   try {
-    const data = await getDatingsByUser(req.params.userId);
-    res.status(200).json(data); // Enviar directamente los datos
+    const data = await getDatingsByUser(req.params.userId)
+    res.status(201).json({
+      message: data
+    })
   } catch (error) {
     console.error(pc.yellow("Error al obtener citas del usuario:"), error);
     res.status(404).json({

@@ -6,7 +6,7 @@ import {
   deleteUser,
   loginUser,
   updateUser,
-} from "../controllers/userControllers.js";
+} from "../controllers/userControllers.ts";
 import cookieParser from "cookie-parser";
 
 const router = express.Router();

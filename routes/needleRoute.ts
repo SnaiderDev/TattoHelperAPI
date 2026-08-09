@@ -3,7 +3,7 @@ import pc from "picocolors";
 import {
   getAllNeedleTypes,
   getNeedleDetails,
-} from "../controllers/needleControllers.js";
+} from "../controllers/needleControllers.ts";
 
 const router = express.Router();
 

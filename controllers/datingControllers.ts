@@ -1,6 +1,6 @@
 import z from "zod";
 import pc from "picocolors";
-import dating from "../models/dating.js";
+import dating from "../models/dating.ts";
 
 
 
