@@ -93,6 +93,5 @@ export async function nextDating(userId: string) {
   // Limpiar el campo dateDiff antes de retornar y devolver el resultado más cercano
   const closestDating = { ...datedatings[0] };
   delete closestDating.dateDiff;
-  
   return closestDating;
 }
