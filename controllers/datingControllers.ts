@@ -64,12 +64,35 @@ export async function createDating(
 
 
 //consulta de citas en db
-export async function getDatings(){
- const datings = await dating.find();
- if(!datings){
-    console.log(pc.yellow(`This is not possible!!`));
+export async function getDatingsByUser(userId: string) {
+   const datings = await dating.find({ userId });
+   if (!datings || datings.length === 0) {
+     console.log(pc.yellow(`No hay citas programadas para el usuario con ID ${userId}.`));
     return null;
  }
- return datings;
- 
+   return datings || [];
+}
+// Función para obtener la cita más próxima a la fecha actual
+export async function nextDating(userId: string) {
+  const datings = await dating.find({ userId }).lean();
+
+  if (!datings || datings.length === 0) {
+    console.log(pc.yellow(`No hay citas programadas para el usuario con ID ${userId}.`));
+    return null;
+  }
+
+  // Convertir las fechas a objetos Date y calcular la diferencia absoluta en milisegundos
+  const datedatings = datings.map((dating: any) => ({
+    ...dating,
+    dateDiff: Math.abs(new Date(dating.date).getTime() - new Date().getTime())
+  }));
+
+  // Encontrar el objeto con la menor diferencia de fecha
+  datedatings.sort((a, b) => a.dateDiff - b.dateDiff);
+
+  // Limpiar el campo dateDiff antes de retornar y devolver el resultado más cercano
+  const closestDating = { ...datedatings[0] };
+  delete closestDating.dateDiff;
+  
+  return closestDating;
 }

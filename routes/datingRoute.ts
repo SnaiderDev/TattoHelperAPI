@@ -1,7 +1,7 @@
 
 import express from "express"
 import pc from "picocolors"
-import { createDating, getDatings } from "../controllers/datingControllers.js"
+import { createDating, getDatingsByUser, nextDating } from "../controllers/datingControllers.js"
 import jwt from 'jsonwebtoken'
 import { tokenVerificaction } from "../controllers/userControllers.js"
 
@@ -25,18 +25,17 @@ router.use(async (req, res, next) => {
 
 */
 
-router.get('/', async(req,res)=>{
+router.get('/:userId', async (req, res) => {
   try {
-    const data = await getDatings()
-    res.status(201).json({
-      message: data
-    })
+    const data = await getDatingsByUser(req.params.userId);
+    res.status(200).json(data); // Enviar directamente los datos
   } catch (error) {
+    console.error(pc.yellow("Error al obtener citas del usuario:"), error);
     res.status(404).json({
-      message: 'This content is not avalible!!!'
-    })
+      message: 'This content is not available!!!'
+    });
   }
-})
+});
 
 router.post('/create',async(req,res)=>{
     const {
@@ -64,4 +63,18 @@ router.post('/create',async(req,res)=>{
   }
 })
 
-export  default router;
+router.get('/next/:userId', async (req, res) => {
+  try {
+    const nextDatingData = await nextDating(req.params.userId);
+    if (!nextDatingData) {
+        // El controlador ya maneja el log y devuelve null si no hay citas
+        return res.status(404).json({ message: 'No se encontraron citas programadas para este usuario.' });
+    }
+    res.status(200).json(nextDatingData);
+  } catch (error) {
+    console.error("Error al obtener la próxima cita:", error);
+    res.status(500).json({ message: 'Error interno al buscar citas.' });
+  }
+});
+
+export default router;

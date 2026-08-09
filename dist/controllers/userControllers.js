@@ -1,0 +1,106 @@
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import pc from "picocolors";
+import user from "../models/user.js";
+import z from "zod";
+// Creación de un usuario
+export async function createUser(name, email, password, overview, photo) {
+    const userSchemaValidation = z.object({
+        name: z.string().min(1),
+        email: z
+            .string()
+            .email()
+            .transform((val) => val.toLowerCase()),
+        password: z.string().min(6),
+        overview: z.string().max(100),
+        photo: z.string(),
+    });
+    const validationResult = userSchemaValidation.safeParse({
+        name,
+        email,
+        password,
+        overview,
+        photo,
+    });
+    if (!validationResult.success) {
+        console.error(pc.yellow(`Error al crear usuario: ${pc.red(validationResult.error.toString())}`));
+        return null;
+    }
+    const data = {
+        name: validationResult.data.name,
+        email: validationResult.data.email,
+        password: validationResult.data.password,
+        overview: validationResult.data.overview,
+        photo: validationResult.data.photo,
+    };
+    const newUser = new user({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        overview: data.overview,
+        photo: data.photo,
+    });
+    return await newUser.save();
+}
+// Inicio de sesión y creación del token de usuario
+export async function loginUser(email, password) {
+    const userDataValidation = z.object({
+        email: z
+            .string()
+            .email()
+            .transform((val) => val.toLowerCase()),
+        password: z.string(),
+    });
+    const validationResult = userDataValidation.safeParse({ email, password });
+    if (!validationResult.success) {
+        console.log(pc.yellow(`Error al iniciar sesión del usuario: ${pc.red(validationResult.error.toString())}`));
+        return null;
+    }
+    const data = {
+        email: validationResult.data.email,
+        password: validationResult.data.password,
+    };
+    const userMatch = await user.findOne({ email: data.email });
+    if (!userMatch)
+        return null;
+    const isMatch = await bcrypt.compare(data.password, userMatch.password);
+    if (!isMatch)
+        return null;
+    if (!process.env.JWT_SECRET) {
+        console.error(pc.yellow(`Advertencia ⚠️: JWT_SECRET no está definido`));
+        return null;
+    }
+    const token = jwt.sign({ id: userMatch._id }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+    });
+    return token;
+}
+// Función para actualizar un usuario
+export async function updateUser(userId, newData) {
+    // Validar estructura de entrada
+    const schema = z.object({
+        overview: z.string().max(100),
+        photo: z.string(),
+    });
+    const validationResult = schema.safeParse(newData);
+    if (!validationResult.success) {
+        console.error(pc.yellow(`Error de validación al actualizar usuario ${pc.red(validationResult.error.toString())}`));
+        return null;
+    }
+    const existingUser = await user.findOne({ _id: userId });
+    if (!existingUser) {
+        console.log(pc.yellow("Usuario no encontrado"));
+        return null;
+    }
+    // Actualizar solo los campos proporcionados
+    const updateFields = {};
+    if ("overview" in newData)
+        updateFields.overview = newData.overview;
+    if ("photo" in newData)
+        updateFields.photo = newData.photo;
+    const result = await user.updateOne({ _id: userId }, { $set: updateFields });
+    return existingUser; // Retornar el objeto del usuario actualizado
+}
+export async function deleteUser(userId) {
+    return await user.deleteOne({ _id: userId });
+}
