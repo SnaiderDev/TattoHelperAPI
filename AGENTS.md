@@ -22,11 +22,13 @@ El proyecto sigue una arquitectura modular y desacoplada:
 
 ### ✅ Guía del Desarrollador (Coding Standards)
 
+
 1. **Nomenclatura:** Usar `camelCase` en inglés para todas las variables y funciones.
 2. **Documentación:** Toda función o método debe ir posteriormente de un comentario simple y directo explicando el motivo de su funcionalidad.
-3. **Flujo de Código:** Uso obligatorio de sentencias `import` explícitas al hacer referencia a módulos externos.
-4.  **Mantenimiento de Lógica:** Nunca eliminar variables o funciones previamente implementadas con una solicitud de mejora, a menos que se esté realizando una refactorización directa y justificada sobre esa misma funcionalidad
-5. **Dependencias:** No instales nuevas dependencias, de ser necesario hazmelo saber y te confirmo para continuar
+3. **Flujo de Código:** Uso obligatorio de sentencias `import` explícitas al hacer referencia a módulos externos y respetar las reglas o normas del lenguage de programacion seleccionado.
+4.  **Typing & TypeScript Best Practices:** Siempre que se trabaje con tipos importados (Modelos, Clases), prefiere usar `typeof ImportedModule` o el tipo exportado (`ImportedModule`) en lugar de solo el nombre del módulo cuando sea necesario diferenciar entre una variable/valor y un tipo estructural.
+5.  **Mantenimiento de Lógica:** Nunca eliminar variables o funciones previamente implementadas con una solicitud de mejora, a menos que se esté realizando una refactorización directa y justificada sobre esa misma funcionalidad
+6. **Dependencias:** No instales nuevas dependencias, de ser necesario hazmelo saber y te confirmo para continuar
 
 ### ⚙️ Workflow Operacional
 

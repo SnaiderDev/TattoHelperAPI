@@ -1,6 +1,7 @@
 import z from "zod";
 import pc from "picocolors";
 import sesion from "../models/sesion.ts";
+import commission from "../models/commission.ts";
 
 
 export async function getSesions(){
@@ -114,5 +115,54 @@ export async function updateDateSesion(sesionId: string, date: string) {
   return updatedSesion;
 }
 
+/**
+ * Encuentra la sesión más cercana a la fecha actual, filtrando por un usuario
+ * cuyas comisiones estén activas (no finalizadas ni canceladas).
+ */
+export async function nextSesion(userId: string): Promise<typeof sesion | null> {
+  // 1. Encontrar todas las comisiones activas del usuario
+  const activeCommissions = await commission.find({
+    userId: userId,
+    state: { $nin: ["f-finished", "c-canceled"] } // Filtra por estados activos (PENDING o cualquier otro no final/cancelado)
+  }).select('$_id');
 
+  if (!activeCommissions || activeCommissions.length === 0) {
+    console.log(pc.yellow(`No active commissions found for user ID: ${userId}`));
+    return null;
+  }
 
+  const commissionIds = activeCommissions.map(c => c._id);
+  
+  // 2. Consultar todas las sesiones asociadas a esas comisiones activas
+  const sessions = await sesion.find({ commissionId: { $in: commissionIds } });
+
+  if (!sessions || sessions.length === 0) {
+    console.log(pc.yellow(`No sessions found for active commissions linked to user ID: ${userId}`));
+    return null;
+  }
+
+  // 3. Determinar la sesión más cercana a la fecha actual (Lógica de minimización de tiempo absoluto)
+  const now = new Date();
+  let closestSession: typeof sesion | null = null; // Using typeof sesion for type safety
+  let minTimeDifference: number = Infinity;
+
+  for (const session of sessions) {
+    // Intentamos parsear la fecha almacenada en el documento de sesión.
+    const sessionDate = new Date(session.date);
+
+    if (isNaN(sessionDate.getTime())) {
+        continue; // Saltar sesiones con fechas inválidas
+    }
+
+    // Calculamos la diferencia absoluta en milisegundos.
+    const timeDifference = Math.abs(now.getTime() - sessionDate.getTime());
+
+    if (timeDifference < minTimeDifference) {
+      minTimeDifference = timeDifference;
+      closestSession = session;
+    }
+  }
+
+  // 4. Retornar la sesión más cercana
+  return closestSession;
+}
