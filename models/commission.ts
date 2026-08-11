@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 const commissionSchema= new mongoose.Schema({
     name: {type:String, required:true},
     email: {type:String, required:true},
-    sesions: {type:Number, requiered:true},
+     sesions: {type:Number, required:true},
     timeAvg: {type:Number, required:true},
     unit: {type:String, required:true},
     state: {type:String, required:true},

@@ -4,7 +4,18 @@ import commission from "../models/commission.ts";
 
 
 
-//creacion de citas
+/**
+ * Creates a new commission record for user tracking.
+ * @param name - Name of the professional.
+ * @param email - Email address of the professional.
+ * @param sesions - Number of sessions recorded.
+ * @param timeAvg - Average time per session in minutes.
+ * @param unit - Unit used for calculation (e.g., 'day', 'month').
+ * @param state - State or region of service.
+ * @param photo - Photo URL of the professional.
+ * @param value - Monetary value associated with the commission.
+ * @param userId - ID of the user who generated this commission record.
+ */
 export async function createCommission(
   name: string,
   email: string,
@@ -28,7 +39,8 @@ export async function createCommission(
     userId: z.string()
   });
 
-  const validationResult = dataValidation.safeParse({
+// Parse validation result using provided parameters
+const validationResult = dataValidation.safeParse({
     name,
     email,
     sesions,
@@ -40,13 +52,12 @@ export async function createCommission(
     userId
   });
 
-    if (!validationResult.success) {
-    console.error(
-      pc.yellow(`Error al crear usuario: ${pc.red(validationResult.error.toString())}`),
-    );
+  if (!validationResult.success) {
+    console.error(pc.yellow(`Error al crear usuario: ${pc.red(validationResult.error.toString())}`));
     return null;
   }
 
+  // If validation is successful, we safely use the validated data to create and save the commission record.
   const newCommission = new commission({
     name: validationResult.data.name,
     email: validationResult.data.email,
@@ -57,7 +68,7 @@ export async function createCommission(
     photo: validationResult.data.photo,
     value: validationResult.data.value,
     userId: validationResult.data.userId
-  })
+  });
 
-  return await newCommission.save()
+  return await newCommission.save();
 }

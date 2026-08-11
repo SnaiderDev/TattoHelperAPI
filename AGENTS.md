@@ -23,7 +23,7 @@ El proyecto sigue una arquitectura modular y desacoplada:
 ### ✅ Guía del Desarrollador (Coding Standards)
 
 1. **Nomenclatura:** Usar `camelCase` en inglés para todas las variables y funciones.
-2. **Documentación:** Toda función o método debe ir precedido de un comentario explicando su propósito antes de su declaración.
+2. **Documentación:** Toda función o método debe ir posteriormente de un comentario simple y directo explicando el motivo de su funcionalidad.
 3. **Flujo de Código:** Uso obligatorio de sentencias `import` explícitas al hacer referencia a módulos externos.
 4.  **Mantenimiento de Lógica:** Nunca eliminar variables o funciones previamente implementadas con una solicitud de mejora, a menos que se esté realizando una refactorización directa y justificada sobre esa misma funcionalidad
 5. **Dependencias:** No instales nuevas dependencias, de ser necesario hazmelo saber y te confirmo para continuar
