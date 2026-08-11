@@ -1,0 +1,63 @@
+import z from "zod";
+import pc from "picocolors";
+import commission from "../models/commission.ts";
+
+
+
+//creacion de citas
+export async function createCommission(
+  name: string,
+  email: string,
+  sesions: number,
+  timeAvg: number,
+  unit: string,
+  state: string,
+  photo: string,
+  value: number,
+  userId: string
+) {
+  const dataValidation = z.object({
+    name: z.string(),
+    email: z.string(),
+    sesions: z.number(),
+    timeAvg: z.number(),
+    unit: z.string().max(1),
+    state: z.string().max(1),
+    photo: z.string().default(""),
+    value: z.number(),
+    userId: z.string()
+  });
+
+  const validationResult = dataValidation.safeParse({
+    name,
+    email,
+    sesions,
+    timeAvg,
+    unit,
+    state,
+    photo,
+    value,
+    userId
+  });
+
+    if (!validationResult.success) {
+    console.error(
+      pc.yellow(`Error al crear usuario: ${pc.red(validationResult.error.toString())}`),
+    );
+    return null;
+  }
+
+  const newCommission = new commission({
+    name: validationResult.data.name,
+    email: validationResult.data.email,
+    sesions: validationResult.data.sesions,
+    timeAvg: validationResult.data.timeAvg,
+    unit: validationResult.data.unit,
+    state: validationResult.data.state,
+    photo: validationResult.data.photo,
+    value: validationResult.data.value,
+    userId: validationResult.data.userId
+  })
+
+  return await newCommission.save()
+}

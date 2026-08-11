@@ -5,7 +5,7 @@ import connectDB from "../config/db.ts";
 //exportacion routers
 import needleRoutes from '../routes/needleRoute.ts';
 import userRoutes from '../routes/userRoute.ts';
-import commissionRoutes from '../routes/commissionIRoute.ts'
+import commissionRoutes from '../routes/commissionRoute.ts'
 import sesionsRoutes from '../routes/sesionRoute.ts'
 
 const app = express();
