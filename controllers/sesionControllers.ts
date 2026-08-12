@@ -164,5 +164,52 @@ export async function nextSesion(userId: string): Promise<any | null> {
   }
 
   // 4. Retornar la sesión más cercana
+  
+  // 4. Retornar la sesión más cercana
   return closestSession;
+}
+
+
+  
+/**
+ * Marca una sesión como finalizada (estado 'F').
+ * @param sesionId El ID de la sesión a finalizar.
+ */
+export async function finishSession(sesionId: string) {
+  // Valida que el ID de sesión proporcionado sea un string no vacío.
+  const datavalidation = z.object({
+    sesionId: z.string().min(1),
+  });
+
+  const validationResult = datavalidation.safeParse({
+    sesionId,
+  });
+
+  if (!validationResult.success) {
+    console.error(
+      pc.yellow(
+        `Error al finalizar sesión: ${pc.red(validationResult.error.toString())}`,
+      ),
+    );
+    return null;
+  }
+
+  const sessionId = validationResult.data.sesionId;
+
+  // 1. Verificar la existencia de la sesión en la base de datos.
+  const sessionExists = await sesion.findById(sessionId).select('_id state');
+
+  if (!sessionExists) {
+    console.log(pc.yellow(`Error: Sesión con ID ${sessionId} no encontrada.`));
+    return null;
+  }
+
+  // 2. Actualiza el estado de la sesión a 'F' (finalizado).
+  const updatedSesion = await sesion.findByIdAndUpdate(
+    sessionId, // Usamos sessionId ya parseado y verificado
+    { state: "F" }, // Establece el estado como Finalizado
+    { new: true },
+  );
+
+  return updatedSesion;
 }
