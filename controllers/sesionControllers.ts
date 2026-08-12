@@ -119,7 +119,7 @@ export async function updateDateSesion(sesionId: string, date: string) {
  * Encuentra la sesión más cercana a la fecha actual, filtrando por un usuario
  * cuyas comisiones estén activas (no finalizadas ni canceladas).
  */
-export async function nextSesion(userId: string): Promise<typeof sesion | null> {
+export async function nextSesion(userId: string): Promise<any | null> {
   // 1. Encontrar todas las comisiones activas del usuario
   const activeCommissions = await commission.find({
     userId: userId,
@@ -143,7 +143,7 @@ export async function nextSesion(userId: string): Promise<typeof sesion | null> 
 
   // 3. Determinar la sesión más cercana a la fecha actual (Lógica de minimización de tiempo absoluto)
   const now = new Date();
-  let closestSession: typeof sesion | null = null; // Using typeof sesion for type safety
+  let closestSession: any | null = null; // Using any to accommodate Mongoose Document type returned from find()
   let minTimeDifference: number = Infinity;
 
   for (const session of sessions) {

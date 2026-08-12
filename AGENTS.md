@@ -27,8 +27,10 @@ El proyecto sigue una arquitectura modular y desacoplada:
 2. **Documentación:** Toda función o método debe ir posteriormente de un comentario simple y directo explicando el motivo de su funcionalidad.
 3. **Flujo de Código:** Uso obligatorio de sentencias `import` explícitas al hacer referencia a módulos externos y respetar las reglas o normas del lenguage de programacion seleccionado.
 4.  **Typing & TypeScript Best Practices:** Siempre que se trabaje con tipos importados (Modelos, Clases), prefiere usar `typeof ImportedModule` o el tipo exportado (`ImportedModule`) en lugar de solo el nombre del módulo cuando sea necesario diferenciar entre una variable/valor y un tipo estructural.
-5.  **Mantenimiento de Lógica:** Nunca eliminar variables o funciones previamente implementadas con una solicitud de mejora, a menos que se esté realizando una refactorización directa y justificada sobre esa misma funcionalidad
-6. **Dependencias:** No instales nuevas dependencias, de ser necesario hazmelo saber y te confirmo para continuar
+5. **Mantenimiento de Lógica:** No eliminar variables o funciones previamente implementadas con una solicitud de mejora, a menos que se esté realizando una refactorización directa y justificada para eliminar código obsoleto o redundante.
+7. **Logging:** Para mensajes de consola como logs o errores que requieren formato (ej. advertencias), se debe utilizar la librería `picocolors` con el apodo `pc` para aplicar un estilo visual consistente en toda la aplicación. Ejemplo: `console.log(pc.yellow('Mensaje'));`
+6. **Coding Standards:** to mandate that all suggested code must adhere strictly to TypeScript best practices, syntax, and rules to prevent runtime compilation errors.
+
 
 ### ⚙️ Workflow Operacional
 
