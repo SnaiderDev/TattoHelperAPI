@@ -31,3 +31,5 @@ router.get('/nearest/:userId', async(req, res) => {
     res.status(401).json({ message: "Could not find the next session." });
   }
 });
+
+export default router;
