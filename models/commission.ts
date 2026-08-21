@@ -1,13 +1,11 @@
 import mongoose from "mongoose";
 
-//state p-Pending | f-finished | c-canceled
-//unit h-hours | m- minutes
+// states => P = Pending  | F = Finished |c = Canceled
+
 const commissionSchema= new mongoose.Schema({
     name: {type:String, required:true},
     email: {type:String, required:true},
-     sesions: {type:Number, required:true},
-    timeAvg: {type:Number, required:true},
-    unit: {type:String, required:true},
+    cellPhone: {type: String, required: false},
     state: {type:String, required:true},
     photo: {type:String, required:false},
     value: {type:Number, required:true},

@@ -11,7 +11,7 @@ import commission from "../models/commission.ts";
  * @param sesions - Number of sessions recorded.
  * @param timeAvg - Average time per session in minutes.
  * @param unit - Unit used for calculation (e.g., 'day', 'month').
- * @param state - State or region of service.
+ * @pastate - State or region of service.
  * @param photo - Photo URL of the professional.
  * @param value - Monetary value associated with the commission.
  * @param userId - ID of the user who generated this commission record.
