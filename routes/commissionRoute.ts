@@ -26,30 +26,15 @@ router.use(async (req, res, next) => {
 */
 
 
-
-router.post('/create',async(req,res)=>{
-    const {
-    name,
-    email,
-    sesions,
-    timeAvg,
-    unit,
-    state,
-    photo,
-    value,
-    userId
-  } = req.body
-
-  try {
-    await createCommission(name,email,sesions,timeAvg,unit,state,photo,value,userId)
-    res.status(201).json({
-         message: "Next commission is coming!"
-    })
-  } catch (error) {
-    console.error(error)
-    res.status(401).json({
-        message:"Next commission is not possible!"
-    })
+//creacion de comission
+router.post('/create', async(req,res)=>{
+  //extraccion de datos requeridos por el usuario
+  const {name, email, cellPhone, aproxSesions, photo, value, userId} = req.body
+  const newCommission = await createCommission(name, email, cellPhone, photo, aproxSesions, value, userId)
+  if(newCommission){
+    res.status(201).json({message: "Comision creada exitosamente"})
+  }else{
+    res.status(400).json({message: "Error al crear la comision"})
   }
 })
 
