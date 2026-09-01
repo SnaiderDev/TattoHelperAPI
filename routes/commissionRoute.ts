@@ -38,7 +38,7 @@ router.post('/create', async(req, res) => {
     return res.status(401).json({ message: "User not authenticated" });
   }
   
-  const newCommission = await createCommission(name, email, cellPhone, photo, aproxSesions, value, userId)
+  const newCommission = await createCommission(name, email, cellPhone, aproxSesions, value, userId)
   if(newCommission) {
     res.status(201).json({ message: "Comisión creada exitosamente" })
   } else {

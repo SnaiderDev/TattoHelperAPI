@@ -7,7 +7,6 @@ const commissionSchema= new mongoose.Schema({
     email: {type:String, required:true},
     cellPhone: {type: String, required: false},
     state: {type:String, required:true},
-    photo: {type:String, required:false},
     aproxSesions: {type:Number, required:true},
     value: {type:Number, required:true},
     userId: {
