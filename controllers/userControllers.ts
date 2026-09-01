@@ -83,6 +83,7 @@ export async function loginUser(email: string, password: string) {
   const token = jwt.sign({ id: userMatch._id }, process.env.JWT_SECRET, {
     expiresIn: "1h",
   });
+  console.log(token);
   return token;
 }
 

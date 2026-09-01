@@ -6,12 +6,11 @@ import jwt from 'jsonwebtoken'
 import { tokenVerificaction } from "../controllers/userControllers.ts"
 
 const router =express.Router()
-//variable global para guardar el token de autenticacion
-let authToken: string | null = null;
 
 //comprobacion de JWT para tener el userid
 router.use(async (req, res, next) => {
   try {
+    console.log(req.cookies);
     const token = req.cookies?.authToken;
     if (!token) {
       return res.status(401).json({ message: "No token provided"});
@@ -24,11 +23,6 @@ router.use(async (req, res, next) => {
   }
 });
 
-router.post('/commissions', async (req, res) => {
-  const { userId } = req.body;
-  const commissions = await getComnissionsByUserId(userId);
-  res.json(commissions);
-});
 
 
 //creacion de comission
