@@ -3,7 +3,6 @@ import pc from 'picocolors'
 //exportacion de la funcion de la base de datos
 import connectDB from "../config/db.ts";
 //exportacion routers
-import needleRoutes from '../routes/needleRoute.ts';
 import userRoutes from '../routes/userRoute.ts';
 import commissionRoutes from '../routes/commissionRoute.ts'
 
@@ -13,7 +12,7 @@ const PORT = 3000;
 // Middleware para parsear JSON las respuestas http
 app.use(express.json());
 // Registrar el router para la ruta /needle/:shortname
-app.use('/needles', needleRoutes);
+
 app.use('/users', userRoutes);
 app.use('/commissions',commissionRoutes )
 
