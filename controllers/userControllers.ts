@@ -80,14 +80,14 @@ export async function loginUser(email: string, password: string) {
     return null;
   }
 
-  const token = jwt.sign({ id: userMatch._id }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ userId: userMatch._id }, process.env.JWT_SECRET, {
     expiresIn: "1h",
   });
   console.log(token);
   return token;
 }
 
-export async function tokenVerificaction(token: string) {
+export async function tokenVerification(token: string) {
   try {
     if (!process.env.JWT_SECRET) {
       console.log(pc.yellow(`JWT_SECRET is not defined!! ⚠️`));
@@ -95,8 +95,8 @@ export async function tokenVerificaction(token: string) {
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log(pc.green(`Token verificado correctamente ✅`));
-    console.log(decoded);
-    return decoded;
+    return decoded
+
   } catch (error) {
     console.log(pc.yellow('This is not possible!'))
     return null;

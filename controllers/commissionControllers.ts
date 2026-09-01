@@ -48,7 +48,7 @@ export async function getComnissionsByUserId(userId:string){
 }
 
 
-export async function getPendingCommissionsByUserId(userId:string){
+export async function getPendingCommissionsByUser(userId:string){
   try {
       const commissions = await commission.find({userId: userId, state: 'P'})
       return commissions;
