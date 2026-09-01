@@ -1,19 +1,20 @@
 
 import express from "express"
 import pc from "picocolors"
-import { createCommission } from "../controllers/commissionControllers.ts"
+import { createCommission, getComnissionsByUserId } from "../controllers/commissionControllers.ts"
 import jwt from 'jsonwebtoken'
 import { tokenVerificaction } from "../controllers/userControllers.ts"
 
-
 const router =express.Router()
-//comprobacion de tokens
-/*
+//variable global para guardar el token de autenticacion
+let authToken: string | null = null;
+
+//comprobacion de JWT para tener el userid
 router.use(async (req, res, next) => {
   try {
     const token = req.cookies?.authToken;
     if (!token) {
-      return res.status(401).json({ message: "No token provided" });
+      return res.status(401).json({ message: "No token provided"});
     }
     tokenVerificaction(token)
     return next();
@@ -23,7 +24,11 @@ router.use(async (req, res, next) => {
   }
 });
 
-*/
+router.post('/commissions', async (req, res) => {
+  const { userId } = req.body;
+  const commissions = await getComnissionsByUserId(userId);
+  res.json(commissions);
+});
 
 
 //creacion de comission
@@ -38,4 +43,7 @@ router.post('/create', async(req,res)=>{
   }
 })
 
+//Obtener comisiones por usuario
+
 export default router;
+

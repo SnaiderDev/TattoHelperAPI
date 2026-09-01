@@ -5,13 +5,8 @@ import user from "../models/user.ts";
 import z from "zod";
 
 // Creación de un usuario
-export async function createUser(
-  name: string,
-  email: string,
-  password: string,
-  overview: string,
-  photo: string,
-) {
+export async function createUser(name: string, email: string, password: string, overview: string, photo: string) {
+  //Maquetacion de datos de entrada
   const userSchemaValidation = z.object({
     name: z.string().min(1),
     email: z
@@ -22,20 +17,11 @@ export async function createUser(
     overview: z.string().max(100),
     photo: z.string(),
   });
+  //comprobacion de datos
+  const validationResult = userSchemaValidation.safeParse({name,email,password,overview,photo});
 
-  const validationResult = userSchemaValidation.safeParse({
-    name,
-    email,
-    password,
-    overview,
-    photo,
-  });
   if (!validationResult.success) {
-    console.error(
-      pc.yellow(
-        `Error al crear usuario: ${pc.red(validationResult.error.toString())}`,
-      ),
-    );
+    console.error(pc.yellow(`Error al crear usuario: ${pc.red(validationResult.error.toString())}`));
     return null;
   }
 
@@ -57,7 +43,7 @@ export async function createUser(
   return await newUser.save();
 }
 
-// Inicio de sesión y creación del token de usuario
+// Inicio de sesión y creación del JWT  de usuario
 export async function loginUser(email: string, password: string) {
   const userDataValidation = z.object({
     email: z
@@ -107,46 +93,11 @@ export async function tokenVerificaction(token: string) {
       return null;
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(pc.green(`Token verificado correctamente ✅`));
+    console.log(decoded);
     return decoded;
   } catch (error) {
     console.log(pc.yellow('This is not possible!'))
     return null;
   }
-}
-
-// Función para actualizar un usuario
-export async function updateUser(userId: string, newData: object) {
-  // Validar estructura de entrada
-  const schema = z.object({
-    overview: z.string().max(100),
-    photo: z.string(),
-  });
-
-  const validationResult = schema.safeParse(newData);
-  if (!validationResult.success) {
-    console.error(
-      pc.yellow(
-        `Error de validación al actualizar usuario ${pc.red(validationResult.error.toString())}`,
-      ),
-    );
-    return null;
-  }
-
-  const existingUser = await user.findOne({ _id: userId });
-  if (!existingUser) {
-    console.log(pc.yellow("Usuario no encontrado"));
-    return null;
-  }
-
-  // Actualizar solo los campos proporcionados
-  const updateFields: Record<string, any> = {};
-  if ("overview" in newData) updateFields.overview = newData.overview;
-  if ("photo" in newData) updateFields.photo = newData.photo;
-
-  const result = await user.updateOne({ _id: userId }, { $set: updateFields });
-  return existingUser; // Retornar el objeto del usuario actualizado
-}
-
-export async function deleteUser(userId: string) {
-  return await user.deleteOne({ _id: userId });
 }

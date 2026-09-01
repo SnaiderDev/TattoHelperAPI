@@ -21,7 +21,7 @@ export async function createCommission(name:string, email:string, cellPhone:stri
    console.log(pc.yellow(`Error al crear la comision: ${pc.red(validationData.error.toString())}`))
    return null
   }
-  // maqueracion del json completo del modelo
+  // maquetacion del json completo del modelo
   const data = {
     name: validationData.data.name,
     email: validationData.data.email,
@@ -35,4 +35,24 @@ export async function createCommission(name:string, email:string, cellPhone:stri
 
   return await commission.create(data)
 
+}
+
+//Consulta de comisiones por uusario 
+export async function getComnissionsByUserId(userId:string){
+  try {
+      const commissions = await commission.find({userId: userId})
+      return commissions;
+  }  catch(error) {
+      console.error(pc.red(`Error al obtener las comisiones del usuario: ${error}`))  
+  }
+}
+
+
+export async function getPendingCommissionsByUserId(userId:string){
+  try {
+      const commissions = await commission.find({userId: userId, state: 'P'})
+      return commissions;
+  }  catch(error) {
+      console.error(pc.red(`Error al obtener las comisiones pendientes del usuario: ${error}`))  
+  }
 }
