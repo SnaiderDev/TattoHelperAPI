@@ -4,7 +4,7 @@ import pc from "picocolors"
 
 
 //creacion de una sesion
-export async function createSesion(initDate: Date, commissionId: string) {
+export async function createSesion(commissionId: string, initDate: Date) {
     try {
         //validacion de los datos y praparacion de los datos en el modelo
         const sesionSchemaValidation = z.object({
@@ -26,5 +26,42 @@ export async function createSesion(initDate: Date, commissionId: string) {
         return newsesion;
     } catch (error:string | any) {
         console.error(pc.yellow("Error creating session: "+  error.toString()))
+    }
+}
+
+//finalizar sesion
+export async function finishSesion (sesionId: string){
+    try {
+        //comprobacion de sesionId valido
+        const sesionIdSchema = z.string().max(1);
+        const validadionData = sesionIdSchema.safeParse(sesionId);
+        if (!validadionData.success) {
+            console.log(pc.yellow('The session ID is invalid'));
+            return null;
+        }
+        //actualizacion de registro y retorno de los datos actualizados
+        const updateSesion = await sesion.findByIdAndUpdate(sesionId, { state: 'F', endDate: new Date() }, { new: true });
+        return updateSesion;
+
+    } catch (error:string | any) {
+        console.error(pc.yellow("Error finishing session: " + error.toString()));
+    }
+}
+
+//consultar sesion
+export async function getSesionById(sesionId: string){
+    try {
+        //comprobacion de sesionId valido
+        const sesionIdSchema = z.string().max(1);
+        const validadionData = sesionIdSchema.safeParse(sesionId);
+        if (!validadionData.success) {
+            console.log(pc.yellow('The session ID is invalid'));
+            return null;
+        }
+        //retorno de los datos de la sesion
+        const sesionData = await sesion.findById(sesionId);
+        return sesionData;
+    } catch (error:string | any) {
+        console.error(pc.yellow("Error finishing session: " + error.toString()));
     }
 }
