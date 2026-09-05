@@ -65,3 +65,22 @@ export async function getSesionById(sesionId: string){
         console.error(pc.yellow("Error finishing session: " + error.toString()));
     }
 }
+
+//Consultar  la sesion mas pendiente mas cercana
+export async function getNextPendingSesion(userId: string){
+    try {
+      //validacion de la informacion
+      const userIdSchema = z.string();
+      const validationData = userIdSchema.safeParse(userId);
+      if (!validationData.success){
+        console.log(pc.yellow('The user ID is invalid'));
+        return null;
+      }
+      //consulta de la sesion mas cercana
+      const nextSesion = await sesion.findOne({ state: 'P', userId: validationData.data}).sort({ initDate: 1});
+      return nextSesion;
+
+    } catch (error:string | any) {
+        console.error(pc.yellow("Error finishing session: " + error.toString()));
+    }
+}

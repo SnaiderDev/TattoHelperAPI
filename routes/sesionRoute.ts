@@ -1,6 +1,6 @@
 import  express from "express"
 import pc from "picocolors"
-import { createSesion } from "../controllers/sesionControllers.ts"
+import { createSesion, getNextPendingSesion } from "../controllers/sesionControllers.ts"
 import { tokenVerification } from "../controllers/userControllers.ts"
 
 const router = express.Router()
@@ -28,6 +28,7 @@ router.use(async (req, res, next) => {
   }
 });
 
+//crear nueva function
 router.post('/create', async(req, res) => {
     try {
         const {initDate, commissionId} = req.body;
@@ -41,6 +42,24 @@ router.post('/create', async(req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Error creating session" })
     }
+})
+
+//consultar la sesion mas cercana
+router.get('/next', async(req, res) => {
+  try {
+    if (!userId){
+      return res.status(403).json({ message: "User not authenticated"});
+    }
+    const nextSesion = await getNextPendingSesion(userId);
+    if(nextSesion){
+      res.status(200).json({ message: "Next pending session retrieved successfully", data: nextSesion })
+    }
+    else {
+      res.status(404).json({ message: "No pending sessions found" })
+    }
+  } catch (error) {
+    res.status(500).json({message: "Error getting next pending session"})
+  }
 })
 
 export default router;
