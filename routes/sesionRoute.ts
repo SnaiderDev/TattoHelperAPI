@@ -1,35 +1,65 @@
-import express from 'express'
-import pc from 'picocolors'
-import { getSesions, nextSesion } from '../controllers/sesionControllers.ts'
+import  express from "express"
+import pc from "picocolors"
+import { createSesion, getNextPendingSesion } from "../controllers/sesionControllers.ts"
+import { tokenVerification } from "../controllers/userControllers.ts"
 
 const router = express.Router()
 
-router.get('/', async(req,res)=>{
- try {
-    const data = getSesions()
-    res.status(201).json(data)
- } catch (error) {
-    res.status(401).json({
-        message: "This is not fine!"
-    })
- }
-});
-
-router.get('/nearest/:userId', async(req, res) => {
+let userId: string | null = null;
+  
+router.use(async (req, res, next) => {
   try {
-    // nextSesion finds the nearest session based on active commissions for a given user ID
-    const sessions = await nextSesion(req.params.userId);
-
-    if (!sessions) {
-      return res.status(200).json({ message: "No upcoming or current session found." });
+    console.log(req.cookies);
+    //req.cookies?.authToken
+    const token = req.cookies?.authToken;
+    if (!token) {
+      return res.status(401).json({ message: "No token provided"});
+    }
+    const verificationResult = await tokenVerification(token)
+    if(!verificationResult){
+      return res.status(401).json({ message: "Token is invalid or expired" });
     }
 
-    // Assuming the success status code should be 200 OK, as we are retrieving data, not creating it.
-    res.status(200).json(sessions);
+    userId = typeof verificationResult === 'object' && verificationResult.userId ? verificationResult.userId : null;
+    return next();
   } catch (error) {
-    console.error(pc.red(`Error finding next session: ${String(error)}`));
-    res.status(401).json({ message: "Could not find the next session." });
+    console.error(pc.yellow("Session is invalid or expired!"));
+    return res.status(401).json({ message: "Token is invalid or expired" });
   }
 });
+
+//crear nueva function
+router.post('/create', async(req, res) => {
+    try {
+        const {initDate, commissionId} = req.body;
+        const newSesion = await createSesion(initDate, commissionId);
+        if(newSesion){
+            res.status(201).json({ message: "Sesion creada exitosamente" })
+        }
+        else {
+            res.status(400).json({ message: "The creation of the session failed" })
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Error creating session" })
+    }
+})
+
+//consultar la sesion mas cercana
+router.get('/next', async(req, res) => {
+  try {
+    if (!userId){
+      return res.status(403).json({ message: "User not authenticated"});
+    }
+    const nextSesion = await getNextPendingSesion(userId);
+    if(nextSesion){
+      res.status(200).json({ message: "Next pending session retrieved successfully", data: nextSesion })
+    }
+    else {
+      res.status(404).json({ message: "No pending sessions found" })
+    }
+  } catch (error) {
+    res.status(500).json({message: "Error getting next pending session"})
+  }
+})
 
 export default router;

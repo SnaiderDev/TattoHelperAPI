@@ -1,14 +1,12 @@
-import mongoose from 'mongoose'
-//state p-Pending | f-finished | c-canceled
-const sesionSChema = new mongoose.Schema({
-    initDate: {type: String, required:true},
-    endDate: {type: String, requires: true},
-    state: {type: String, required: true},
-    commissionId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "commissions",
-        required:true
-    }
-});
 
-export default mongoose.model('sesion', sesionSChema);
+import mongoose from "mongoose";
+
+// STATES => P = Pending  | F = Finished | C = Canceled
+const sesionSchema  = new mongoose.Schema({
+    initDate: { type: Date,  required: true},
+    endDate:  { type: Date, requires: false},
+    state: { type: String, requires: true},
+    commissionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Commission', required: true }
+})
+
+export default mongoose.model('sesion', sesionSchema)

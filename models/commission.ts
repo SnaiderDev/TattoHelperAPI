@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 
 // Schema definition para el modelo de Comisión (Commission)
 const commissionSchema= new mongoose.Schema({
+
     name: {type:String, required:true}, // Nombre del servicio o comisión
     email: {type:String, required:true}, // Email asociado a la comisión
     cellPhone: {type: String, required: false}, // Teléfono celular de contacto
